@@ -1,5 +1,6 @@
 package sample;
 
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
 import javax.xml.stream.XMLEventFactory;
@@ -29,19 +30,24 @@ public class ContactData {
     private static final String PHONE_NUMBER = "phone_number";
     private static final String NOTES = "notes";
 
-    private ObservableList<Contact> contacts;
+    private ObservableList<Contact> contacts = FXCollections.observableArrayList();
 
-    public ContactData() {
+    ContactData() {
         // *** initialize the contacts list here ***
-        Contact contact = new Contact();
-        contact.setFirstName("Mateusz");
-        contact.setLastName("Szafarz");
-        contact.setPhoneNumber("345334543");
-        contact.setNotes("asdfsfsd fdsfds f");
-        contacts.add(contact);
     }
 
     // *** Add methods to add/delete/access contacts here ***
+    public void addContact(Contact contact) {
+        contacts.add(contact);
+    }
+
+    public void deteteContact(Contact contact) {
+        contacts.remove(contact);
+    }
+
+    public ObservableList<Contact> getContacts() {
+        return contacts;
+    }
 
     public void loadContacts() {
         try {
