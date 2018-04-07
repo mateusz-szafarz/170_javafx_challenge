@@ -16,7 +16,7 @@
             <menus>
                 <Menu mnemonicParsing="false" text="File">
                     <items>
-                        <MenuItem mnemonicParsing="false" text="Add contact"/>
+                        <MenuItem mnemonicParsing="false" text="Add contact" onAction="#displayNewContactDialog"/>
                         <SeparatorMenuItem mnemonicParsing="false"/>
                         <MenuItem mnemonicParsing="false" text="Close"/>
                     </items>
@@ -25,10 +25,10 @@
         </MenuBar>
         <TableView fx:id="table" prefHeight="445.0" prefWidth="750.0">
             <columns>
-                <TableColumn prefWidth="150.0" text="First Name"/>
-                <TableColumn prefWidth="150.0" text="Last Name"/>
-                <TableColumn prefWidth="150.0" text="Phone Number"/>
-                <TableColumn prefWidth="300.0" text="Notes"/>
+                <TableColumn fx:id="firstName" prefWidth="150.0" text="First Name"/>
+                <TableColumn fx:id="lastName" prefWidth="150.0" text="Last Name"/>
+                <TableColumn fx:id="phoneNumber" prefWidth="150.0" text="Phone Number"/>
+                <TableColumn fx:id="notes" prefWidth="300.0" text="Notes"/>
             </columns>
         </TableView>
     </children>

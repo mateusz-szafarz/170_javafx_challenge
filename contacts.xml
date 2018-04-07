@@ -4,7 +4,7 @@
 	<first_name>Mateusz</first_name>
 	<last_name>Szafarz</last_name>
 	<phone_number>345334543</phone_number>
-	<notes>asdfsfsd fdsfds f</notes>
+	<notes>20:59</notes>
 </contact>
 <contact>
 	<first_name>Ewelina</first_name>
@@ -17,5 +17,11 @@
 	<last_name>Dog</last_name>
 	<phone_number>4234 234</phone_number>
 	<notes>Hau Hau</notes>
+</contact>
+<contact>
+	<first_name>Tomek</first_name>
+	<last_name>Burczymucha</last_name>
+	<phone_number>342 3432</phone_number>
+	<notes>some notes</notes>
 </contact>
 </contacts>
