@@ -3,24 +3,15 @@ package sample;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
-import javax.xml.stream.XMLEventFactory;
-import javax.xml.stream.XMLEventReader;
-import javax.xml.stream.XMLEventWriter;
-import javax.xml.stream.XMLInputFactory;
-import javax.xml.stream.XMLOutputFactory;
-import javax.xml.stream.XMLStreamException;
-import javax.xml.stream.events.Characters;
-import javax.xml.stream.events.EndElement;
-import javax.xml.stream.events.StartDocument;
-import javax.xml.stream.events.StartElement;
-import javax.xml.stream.events.XMLEvent;
+import javax.xml.stream.*;
+import javax.xml.stream.events.*;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.InputStream;
 
 
-public class ContactData {
+class ContactData {
 
     private static final String CONTACTS_FILE = "contacts.xml";
 
@@ -37,19 +28,19 @@ public class ContactData {
     }
 
     // *** Add methods to add/delete/access contacts here ***
-    public void addContact(Contact contact) {
+    void addContact(Contact contact) {
         contacts.add(contact);
     }
 
-    public void deteteContact(Contact contact) {
+    void deteteContact(Contact contact) {
         contacts.remove(contact);
     }
 
-    public ObservableList<Contact> getContacts() {
+    ObservableList<Contact> getContacts() {
         return contacts;
     }
 
-    public void loadContacts() {
+    void loadContacts() {
         try {
             // First, create a new XMLInputFactory
             XMLInputFactory inputFactory = XMLInputFactory.newInstance();
@@ -115,7 +106,7 @@ public class ContactData {
         }
     }
 
-    public void saveContacts() {
+    void saveContacts() {
 
         try {
             // create an XMLOutputFactory
@@ -153,8 +144,9 @@ public class ContactData {
         }
     }
 
-    private void saveContact(XMLEventWriter eventWriter, XMLEventFactory eventFactory, Contact contact)
-            throws FileNotFoundException, XMLStreamException {
+    private void saveContact(XMLEventWriter eventWriter, XMLEventFactory eventFactory, Contact
+            contact)
+            throws XMLStreamException {
 
         XMLEvent end = eventFactory.createDTD("\n");
 
