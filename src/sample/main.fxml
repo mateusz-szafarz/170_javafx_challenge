@@ -10,15 +10,15 @@
 
 <VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="475.0"
       prefWidth="750.0" xmlns="http://javafx.com/javafx/9" xmlns:fx="http://javafx.com/fxml/1"
-      fx:controller="sample.Controller">
+      fx:id="mainVBoxPane" fx:controller="sample.Controller">
     <children>
         <MenuBar>
             <menus>
-                <Menu mnemonicParsing="false" text="File">
+                <Menu mnemonicParsing="false" text="Contacts">
                     <items>
                         <MenuItem mnemonicParsing="false" text="Add contact" onAction="#displayNewContactDialog"/>
                         <SeparatorMenuItem mnemonicParsing="false"/>
-                        <MenuItem mnemonicParsing="false" text="Close"/>
+                        <MenuItem mnemonicParsing="false" text="Close" onAction="#closeTheApp"/>
                     </items>
                 </Menu>
             </menus>
