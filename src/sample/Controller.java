@@ -55,12 +55,22 @@ public class Controller {
 
     private void initializeTableContextMenu() {
         tableContextMenu = new ContextMenu();
+        MenuItem editMenuItem = new MenuItem("Edit");
+        editMenuItem.setOnAction(event -> {
+            Contact item = table.getSelectionModel().getSelectedItem();
+            try {
+                displayEditContactDialog(item);
+            } catch (IOException e) {
+                System.out.println("couldn't load fxml for contact dialog");
+                e.printStackTrace();
+            }
+        });
         MenuItem deleteMenuItem = new MenuItem("Delete");
         deleteMenuItem.setOnAction(event -> {
             Contact item = table.getSelectionModel().getSelectedItem();
             deleteItem(item);
         });
-        tableContextMenu.getItems().addAll(deleteMenuItem);
+        tableContextMenu.getItems().addAll(editMenuItem, deleteMenuItem);
     }
 
     private void deleteItem(Contact item) {
@@ -76,10 +86,33 @@ public class Controller {
         }
     }
 
+    private void displayEditContactDialog(Contact item) throws IOException {
+        Dialog<ButtonType> dialog = getButtonTypeDialog();
+        FXMLLoader fxmlLoader = loadFXMLViewAndSetDialogContent(dialog);
+        ContactDialogController controller = fxmlLoader.getController();
+
+        dialog.setTitle("Edit Contact");
+        dialog.setHeaderText("Use this dialog to edit a contact item");
+
+        dialog.getDialogPane().getButtonTypes().add(ButtonType.OK);
+        dialog.getDialogPane().getButtonTypes().add(ButtonType.CANCEL);
+
+        controller.fillInFields(item);
+        Optional<ButtonType> result = dialog.showAndWait();
+
+        if (result.isPresent() && result.get() == ButtonType.OK) {
+            controller.processResults(item);
+        }
+    }
+
     @FXML
     public void displayNewContactDialog() throws IOException {
         Dialog<ButtonType> dialog = getButtonTypeDialog();
-        FXMLLoader fxmlLoader = loadFXMLView(dialog);
+        FXMLLoader fxmlLoader = loadFXMLViewAndSetDialogContent(dialog);
+        ContactDialogController controller = fxmlLoader.getController();
+
+        dialog.setTitle("Add New Contact");
+        dialog.setHeaderText("Use this dialog to create a new contact item");
 
         dialog.getDialogPane().getButtonTypes().add(ButtonType.OK);
         dialog.getDialogPane().getButtonTypes().add(ButtonType.CANCEL);
@@ -87,14 +120,13 @@ public class Controller {
         Optional<ButtonType> result = dialog.showAndWait();
 
         if (result.isPresent() && result.get() == ButtonType.OK) {
-            ContactDialogController controller = fxmlLoader.getController();
             Contact newItem = controller.processResults();
             Main.contactData.addContact(newItem);
             table.getSelectionModel().select(newItem);
         }
     }
 
-    private FXMLLoader loadFXMLView(Dialog<ButtonType> dialog) throws IOException {
+    private FXMLLoader loadFXMLViewAndSetDialogContent(Dialog<ButtonType> dialog) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader();
         fxmlLoader.setLocation(getClass().getResource("contactDialog.fxml"));
         dialog.getDialogPane().setContent(fxmlLoader.load());
@@ -104,8 +136,6 @@ public class Controller {
     private Dialog<ButtonType> getButtonTypeDialog() {
         Dialog<ButtonType> dialog = new Dialog<>();
         dialog.initOwner(mainVBoxPane.getScene().getWindow());
-        dialog.setTitle("Add New Contact");
-        dialog.setHeaderText("Use this dialog to create a new contact item");
         return dialog;
     }
 
