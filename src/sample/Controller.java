@@ -3,10 +3,7 @@ package sample;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.control.ButtonType;
-import javafx.scene.control.Dialog;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.VBox;
 
@@ -22,15 +19,29 @@ public class Controller {
     TableView<Contact> table;
 
     @FXML
-    TableColumn<Contact, String> firstName;
+    private ContextMenu tableContextMenu;
+
     @FXML
-    TableColumn<Contact, String> lastName;
-    @FXML
-    TableColumn<Contact, String> phoneNumber;
-    @FXML
-    TableColumn<Contact, String> notes;
+    TableColumn<Contact, String> firstName, lastName, phoneNumber, notes;
 
     public void initialize() {
+
+        initializeTableContextMenu();
+        table.setRowFactory(param -> {
+            TableRow<Contact> row = new TableRow<>();
+
+            row.emptyProperty().addListener(
+                    ((observable, wasEmpty, isNowEmpty) -> {
+                        if (isNowEmpty) {
+                            row.setContextMenu(null);
+                        } else {
+                            row.setContextMenu(tableContextMenu);
+                        }
+                    })
+            );
+
+            return row;
+        });
 
         firstName.setCellValueFactory(new PropertyValueFactory<>("firstName"));
         lastName.setCellValueFactory(new PropertyValueFactory<>("lastName"));
@@ -38,8 +49,31 @@ public class Controller {
         notes.setCellValueFactory(new PropertyValueFactory<>("notes"));
 
         table.setItems(Main.contactData.getContacts());
+        table.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
+        table.getSelectionModel().selectFirst();
+    }
 
+    private void initializeTableContextMenu() {
+        tableContextMenu = new ContextMenu();
+        MenuItem deleteMenuItem = new MenuItem("Delete");
+        deleteMenuItem.setOnAction(event -> {
+            Contact item = table.getSelectionModel().getSelectedItem();
+            deleteItem(item);
+        });
+        tableContextMenu.getItems().addAll(deleteMenuItem);
+    }
 
+    private void deleteItem(Contact item) {
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Delete Contact Item");
+        alert.setHeaderText("Delete item: " + item.getFirstName());
+        alert.setContentText("Are you sure?  Press OK to confirm, or cancel to Back out.");
+
+        Optional<ButtonType> result = alert.showAndWait();
+
+        if (result.isPresent() && (result.get() == ButtonType.OK)) {
+            Main.contactData.deteteContact(item);
+        }
     }
 
     @FXML
@@ -52,7 +86,7 @@ public class Controller {
 
         Optional<ButtonType> result = dialog.showAndWait();
 
-        if(result.isPresent() && result.get() == ButtonType.OK) {
+        if (result.isPresent() && result.get() == ButtonType.OK) {
             NewContactDialogController controller = fxmlLoader.getController();
             Contact newItem = controller.processResults();
             Main.contactData.addContact(newItem);
