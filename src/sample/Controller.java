@@ -87,7 +87,7 @@ public class Controller {
         Optional<ButtonType> result = dialog.showAndWait();
 
         if (result.isPresent() && result.get() == ButtonType.OK) {
-            NewContactDialogController controller = fxmlLoader.getController();
+            ContactDialogController controller = fxmlLoader.getController();
             Contact newItem = controller.processResults();
             Main.contactData.addContact(newItem);
             table.getSelectionModel().select(newItem);
@@ -96,7 +96,7 @@ public class Controller {
 
     private FXMLLoader loadFXMLView(Dialog<ButtonType> dialog) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader();
-        fxmlLoader.setLocation(getClass().getResource("newContactDialog.fxml"));
+        fxmlLoader.setLocation(getClass().getResource("contactDialog.fxml"));
         dialog.getDialogPane().setContent(fxmlLoader.load());
         return fxmlLoader;
     }
